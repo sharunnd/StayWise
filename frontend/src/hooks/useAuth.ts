@@ -22,7 +22,7 @@ export function useAuth() {
 
   const logout = useMutation<AxiosResponse<{ message: string }>, Error, void>({
     mutationFn: () => api.post("/auth/logout"),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["me"] }),
+    onSuccess: () => qc.removeQueries({ queryKey: ["me"] }),
   });
 
   return { login, signup, logout };
