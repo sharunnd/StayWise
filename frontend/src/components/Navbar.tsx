@@ -1,37 +1,65 @@
-// src/components/Navbar.tsx
 "use client";
 
 import Link from "next/link";
 import { useUser } from "../hooks/useUser";
 import { useAuth } from "../hooks/useAuth";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Navbar() {
   const { data: user } = useUser();
   const { logout } = useAuth();
+  const pathname = usePathname();
+  const router = useRouter();
+  const linkClasses = (path: string) => {
+    return pathname === path ? "text-blue-500" : "hover:text-gray-600";
+  };
 
+
+  const handleLogout = async () => {
+    try {
+      await logout.mutateAsync();
+      router.push("/login");
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
-    <nav className="bg-white shadow p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="font-bold text-lg">StayWise</Link>
+    <nav className=" bg-white shadow p-4 w-full border-b-gray-100 top-0 sticky">
+      <div className="container mx-auto flex justify-between items-center gap-3">
+        <Link href="/" className="font-bold text-2xl">
+          StayWise
+        </Link>
 
-        <div className="flex items-center gap-4">
-          <Link href="/">Properties</Link>
-          <Link href="/bookings">My Bookings</Link>
+        <div className="flex items-center gap-4 overflow-x-auto">
+          <Link href="/" className={linkClasses("/")}>
+            Properties
+          </Link>
+          <Link href="/bookings" className={linkClasses("/bookings") + " whitespace-nowrap"}>
+            My Bookings
+          </Link>
 
           {user ? (
             <>
-              <span className="text-sm">Hi, {user.name ?? user.email}</span>
+              {/* <span className="text-sm">Hi, {user.name ?? user.email}</span> */}
               <button
-                onClick={() => logout.mutate()}
-                className="text-sm bg-red-500 text-white px-3 py-1 rounded"
+                onClick={handleLogout}
+                className="text-sm bg-black text-white px-3 py-1 rounded cursor-pointer"
               >
                 Logout
               </button>
             </>
           ) : (
             <>
-              <Link href="/login" className="text-sm">Login</Link>
-              <Link href="/signup" className="text-sm bg-green-500 text-white px-3 py-1 rounded">Sign up</Link>
+              <Link href="/login" className={linkClasses("/login")}>
+                Login
+              </Link>
+              <Link
+                href="/signup"
+                className="text-sm whitespace-nowrap bg-black text-white px-3 py-1 rounded"
+              >
+                Sign up
+              </Link>
             </>
           )}
         </div>

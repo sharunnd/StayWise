@@ -1,15 +1,16 @@
-// src/app/login/page.tsx
 "use client";
 
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
 
 export default function LoginPage() {
   const { login } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const loginPending =  login.isPending
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,8 +18,8 @@ export default function LoginPage() {
       await login.mutateAsync({ email, password });
       router.push("/");
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        alert(err.message); // Safe: Error has 'message'
+      if (err instanceof AxiosError) {
+        alert(err?.response?.data?.message || "Login failed"); // Safe: Error has 'message'
       } else {
         alert("Login failed"); // fallback
       }
@@ -26,9 +27,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Login</h1>
-      <form onSubmit={submit} className="flex flex-col gap-2">
+    <div className="max-w-sm mx-auto my-[30vh]">
+      <form onSubmit={submit} className="flex flex-col gap-2 md:gap-4 lg:gap-6">
         <input
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -44,7 +44,9 @@ export default function LoginPage() {
         />
         <button
           type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded"
+          disabled={loginPending}
+          style={{cursor: loginPending ? "not-allowed" : "pointer"}}
+          className="bg-black hover:bg-white hover:text-black border text-white px-4 py-2 rounded"
         >
           Login
         </button>
