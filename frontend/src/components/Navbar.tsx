@@ -25,8 +25,8 @@ export default function Navbar() {
     }
   };
   return (
-    <nav className=" bg-white shadow p-4 w-full border-b-gray-100 top-0 sticky">
-      <div className="container mx-auto flex justify-between items-center gap-3">
+    <nav className=" bg-white shadow p-6 z-50 w-full border-b-gray-100 top-0 sticky">
+      <div className="w-full flex justify-between items-center gap-3">
         <Link href="/" className="font-bold text-2xl">
           StayWise
         </Link>
@@ -34,6 +34,9 @@ export default function Navbar() {
         <div className="flex items-center gap-4 overflow-x-auto">
           <Link href="/" className={linkClasses("/")}>
             Properties
+          </Link>
+          <Link href="/add-property" className={linkClasses("/add-property")}>
+            Add Properties
           </Link>
           <Link href="/bookings" className={linkClasses("/bookings") + " whitespace-nowrap"}>
             My Bookings
