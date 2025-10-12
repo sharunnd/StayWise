@@ -16,16 +16,26 @@ export default function HomePage() {
     retry: 1,
   });
 
-  if (isLoading) return <div>Loading properties...</div>;
-  if (isError) return <div>Failed to load properties: {error.message}</div>;
-
+  if (isLoading) return <div className="min-h-[100vh] text-center pt-3 font-medium">Loading properties...</div>;
+  if (isError) return <div className="min-h-[100vh] flex justify-center items-center font-bold text-2xl">Failed to load properties: {error.message}</div>;
+  const reverseedData = data ? [...data].reverse() : []
+  const topRowProperties = reverseedData?.slice(0, 2) || [];
+  const bottomRowProperties = reverseedData?.slice(2,6) || [];
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">StayWise Properties</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data?.map((property) => (
-          <PropertyCard key={property._id} property={property} />
-        ))}
+    <div className="space-y-3 p-6">
+      <h2 className="text-3xl font-bold">Latest Properties</h2>
+      <p>Most recent properties added by our hosts</p>
+      <div className="grid gap-4">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
+          {topRowProperties.map((property) => (
+            <PropertyCard key={property._id} property={property} />
+          ))}
+        </div>
+        <div className="grid md:grid-cols-3 gap-4">
+          {bottomRowProperties.map((property) => (
+            <PropertyCard key={property._id} property={property} />
+          ))}
+        </div>
       </div>
     </div>
   );
