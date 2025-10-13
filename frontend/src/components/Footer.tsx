@@ -5,7 +5,7 @@ export default function Footer() {
         <span className=" text-3xl text-black font-bold tracking-tight">
           StayWise
         </span>
-        <span className="text-black font-bold tracking-tight flex gap-4">
+        <span className="text-black font-bold tracking-tight flex flex-col md:flex-row gap-4">
           <p className=" cursor-pointer">Privacy Policy</p>
           <p className=" cursor-pointer">Terms of Service</p>
         </span>

@@ -45,21 +45,27 @@ export default function BookingForm({ propertyId }: Props) {
       onSubmit={handleSubmit}
       className="flex flex-col gap-2 max-w-md mx-auto"
     >
+      <label htmlFor="start-date">Start Date</label>
       <input
+        name="start-date"
         type="date"
         value={startDate}
         onChange={(e) => setStartDate(e.target.value)}
         required
         className="border p-2 rounded w-full"
       />
+      <label htmlFor="end-date">End Date</label>
       <input
+        name="end-date"
         type="date"
         value={endDate}
         onChange={(e) => setEndDate(e.target.value)}
         required
         className="border p-2 rounded w-full"
       />
+      <label htmlFor="guests">Guests</label>
       <input
+        name="guests"
         type="number"
         value={guests}
         onChange={(e) => setGuests(Number(e.target.value))}
@@ -71,6 +77,7 @@ export default function BookingForm({ propertyId }: Props) {
       <button
         type="submit"
         disabled={loading}
+        style={{cursor: loading ? "not-allowed": "pointer"}}
         className="bg-blue-500 text-white p-2 rounded disabled:opacity-50"
       >
         {loading ? "Booking..." : "Book Now"}

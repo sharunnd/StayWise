@@ -3,9 +3,9 @@
 
 import { useQuery } from "@tanstack/react-query";
 import api from "../../../lib/axiosInstance";
-import { useRouter } from "next/navigation";
 import BookingForm from "../../../components/BookingForm";
 import { Property } from "../../../types";
+import Image from "next/image";
 
 export default function PropertyPage({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -18,13 +18,36 @@ export default function PropertyPage({ params }: { params: { id: string } }) {
     retry: false, // options go here
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (!data) return <div>Property not found</div>;
+  if (isLoading)
+    return (
+      <div className="min-h-[100vh] text-center pt-3 font-medium">
+        Loading properties...
+      </div>
+    );
+  if (!data)
+    return (
+      <div className="min-h-[100vh] flex justify-center items-center font-bold text-2xl">
+        Property not found
+      </div>
+    );
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold">{data.title}</h1>
-      <p className="text-sm text-muted">{data.location}</p>
+    <div className="space-y-6 p-6">
+      <h1 className="text-3xl font-bold">{data.title}</h1>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {data?.images &&
+          data.images.map((image, idx) => (
+            <div key={idx} className="relative h-[300px] w-full">
+              <Image
+                src={image}
+                alt={data.title}
+                fill
+                className="rounded-md object-cover object-center"
+              />
+            </div>
+          ))}
+      </div>
+      <p className="text-lg text-muted">{data.location}</p>
       <p className="mt-3">{data.description}</p>
 
       <div className="mt-6">
