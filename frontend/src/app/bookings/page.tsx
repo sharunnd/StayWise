@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import api from "../../lib/axiosInstance";
 import ProtectedRoute from "../../components/ProtectedRoute";
 import { Booking } from "../../types";
+import Image from "next/image";
 
 function BookingsInner() {
   const { data, isLoading } = useQuery<Booking[]>({
@@ -20,15 +21,56 @@ function BookingsInner() {
   if (!data || data.length === 0) return <div>No bookings yet</div>;
 
   return (
-    <div className="space-y-3">
-      {data.map((b) => (
-        <div key={b.id} className="bg-white p-3 rounded shadow">
-          {/* <div className="text-lg font-semibold">{b.property?.title}</div> */}
-          <div>
-            {new Date(b.startDate).toLocaleDateString()} —{" "}
-            {new Date(b.endDate).toLocaleDateString()}
+    // <div className="space-y-3">
+    //   {data.map((b) => (
+    //     <div key={b.id} className="bg-white p-3 rounded shadow">
+    //       {/* <div className="text-lg font-semibold">{b.property?.title}</div> */}
+    //       <div>
+    //         {new Date(b.startDate).toLocaleDateString()} —{" "}
+    //         {new Date(b.endDate).toLocaleDateString()}
+    //       </div>
+    //       <div className="text-sm text-muted">Guests: {b.guests}</div>
+    //     </div>
+    //   ))}
+    // </div>
+
+    <div className="space-y-5 p-6">
+      <h1 className="text-2xl font-bold">My Bookings</h1>
+      {data.map((booking) => (
+        <div
+          key={booking.id}
+          className="grid grid-cols-1 lg:grid-cols-[1fr_3fr] border border-slate-300 rounded-lg p-8 gap-5"
+        >
+          <div className="relative w-full h-[250px] rounded-md overflow-hidden">
+            <Image
+              src={booking.property?.images?.[0] || "/placeholder.jpg"}
+              fill
+              className="w-full h-full object-cover object-center"
+              alt=""
+            />
           </div>
-          <div className="text-sm text-muted">Guests: {b.guests}</div>
+          <div className="flex flex-col gap-4 overflow-y-auto max-h-[300px]">
+            <div className="text-2xl font-bold">
+              {booking?.property?.title}
+              <div className="text-xs font-normal">
+                {booking?.property?.location}
+              </div>
+            </div>
+
+            <div>
+              <div>
+                <span className="font-bold mr-2">Dates: </span>
+                <span>
+                  {new Date(booking.startDate).toDateString()} -
+                  {new Date(booking.startDate).toDateString()}
+                </span>
+              </div>
+              <div>
+                <span className="font-bold mr-2">Guests:</span>
+                <span>{booking.guests}</span>
+              </div>
+            </div>
+          </div>
         </div>
       ))}
     </div>
@@ -38,10 +80,7 @@ function BookingsInner() {
 export default function MyBookingsPage() {
   return (
     <ProtectedRoute>
-      <div>
-        <h1 className="text-2xl font-bold mb-4">My Bookings</h1>
-        <BookingsInner />
-      </div>
+      <BookingsInner />
     </ProtectedRoute>
   );
 }

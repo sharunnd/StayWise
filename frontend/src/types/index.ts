@@ -29,4 +29,5 @@ export type Booking = {
   startDate: string;
   endDate: string;
   guests: number;
+  property?: Property;
 };

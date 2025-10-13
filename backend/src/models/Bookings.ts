@@ -7,6 +7,7 @@ export interface IBooking extends Document {
   endDate: Date;
   guests: number;
   createdAt: Date;
+  image: string;
 }
 
 const bookingSchema = new Schema<IBooking>({
@@ -16,6 +17,7 @@ const bookingSchema = new Schema<IBooking>({
   endDate: Date,
   guests: Number,
   createdAt: { type: Date, default: Date.now },
+  image: String,
 });
 
 export const Booking = model<IBooking>("Booking", bookingSchema);
