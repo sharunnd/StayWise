@@ -59,8 +59,30 @@ router.post("/login", async (req, res) => {
 
 // POST /auth/logout
 router.post("/logout", (req, res) => {
-  res.clearCookie("token");
-  return res.json({ ok: true });
+  try {
+    const isProduction = process.env.NODE_ENV === "production";
+    
+    // Clear cookie with the SAME settings used in login
+    res.cookie("token", "", {
+      httpOnly: true,
+      secure: isProduction, // MUST match login settings
+      sameSite: isProduction ? "none" : "lax", // MUST match login settings
+      expires: new Date(0), // Expire immediately
+      path: "/",
+    });
+
+    res.json({ 
+      ok: true,
+      message: "Logged out successfully" 
+    });
+    
+  } catch (error) {
+   
+    res.status(500).json({ 
+      ok: false,
+      message: "Logout failed" 
+    });
+  }
 });
 
 // GET /auth/me
