@@ -15,7 +15,7 @@ function setTokenCookie(res: express.Response, token: string) {
   res.cookie("token", token, {
     httpOnly: true,
     secure: isProd,
-    sameSite: "lax",
+    sameSite: isProd ? "none" : "lax",
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 }
