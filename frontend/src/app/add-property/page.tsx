@@ -8,7 +8,7 @@ import {
 import Image from "next/image";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
-export default function CreatePropertyPage() {
+function CreatePropertyInner() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState<string>("");
@@ -54,7 +54,7 @@ export default function CreatePropertyPage() {
   };
 
   return (
-    <ProtectedRoute>
+  
       <div className="max-w-xl mx-auto p-6">
         <h1 className="text-2xl font-bold mb-4">Add Property</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -144,6 +144,14 @@ export default function CreatePropertyPage() {
           <p className="text-red-500 mt-2">{propertyMutation.error.message}</p>
         )}
       </div>
+
+  );
+}
+
+export default function CreatePropertyPage() {
+  return (
+    <ProtectedRoute>
+      <CreatePropertyInner />
     </ProtectedRoute>
   );
 }
