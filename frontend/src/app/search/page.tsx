@@ -4,15 +4,15 @@ import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import api from "../../lib/axiosInstance";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { Property } from "@/types";
 import Link from "next/link";
 
-export default function SearchPage() {
+function SearchContent() {
   const searchParams = useSearchParams();
   const query = searchParams.get("query") || "";
   const [page, setPage] = useState(1);
-  const limit = 6; // number of results per page
+  const limit = 6;
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["search", query, page],
@@ -92,5 +92,13 @@ export default function SearchPage() {
         </button>
       </div>
     </div>
+  );
+}
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center min-h-[100vh]">Loading search...</div>}>
+      <SearchContent />
+    </Suspense>
   );
 }
