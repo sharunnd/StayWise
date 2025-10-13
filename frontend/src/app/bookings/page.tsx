@@ -17,23 +17,20 @@ function BookingsInner() {
     retry: false,
   });
 
-  if (isLoading) return <div>Loading bookings...</div>;
-  if (!data || data.length === 0) return <div>No bookings yet</div>;
+  if (isLoading)
+    return (
+      <div className="min-h-[100vh] text-center pt-3 font-medium">
+        Loading bookings...
+      </div>
+    );
+  if (!data || data.length === 0)
+    return (
+      <div className="min-h-[100vh] flex justify-center items-center font-bold text-2xl">
+        No bookings yet
+      </div>
+    );
 
   return (
-    // <div className="space-y-3">
-    //   {data.map((b) => (
-    //     <div key={b.id} className="bg-white p-3 rounded shadow">
-    //       {/* <div className="text-lg font-semibold">{b.property?.title}</div> */}
-    //       <div>
-    //         {new Date(b.startDate).toLocaleDateString()} —{" "}
-    //         {new Date(b.endDate).toLocaleDateString()}
-    //       </div>
-    //       <div className="text-sm text-muted">Guests: {b.guests}</div>
-    //     </div>
-    //   ))}
-    // </div>
-
     <div className="space-y-5 p-6">
       <h1 className="text-2xl font-bold">My Bookings</h1>
       {data.map((booking) => (

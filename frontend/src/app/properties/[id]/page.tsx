@@ -1,4 +1,3 @@
-// src/app/properties/[id]/page.tsx
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
@@ -15,7 +14,7 @@ export default function PropertyPage({ params }: { params: { id: string } }) {
       const res = await api.get(`/properties/${id}`);
       return res.data.property as Property;
     },
-    retry: false, // options go here
+    retry: false, 
   });
 
   if (isLoading)

@@ -1,14 +1,11 @@
-// src/routes/properties.ts
 import express from "express";
 import { Property } from "../models/Property";
 import { upload } from "../middleware/upload";
 import cloudinary from "../config/cloudinary";
 const router = express.Router();
 
-
 /**
  * POST /properties
- * Create property with Cloudinary images
  */
 router.post("/add", upload.array("images"), async (req, res) => {
   try {
@@ -50,11 +47,30 @@ router.get("/", async (req, res) => {
   res.json({ properties });
 });
 
+
+router.get("/search", async (req, res) => {
+  const { location = "", page = 1, limit = 6 } = req.query;
+  const skip = (Number(page) - 1) * Number(limit);
+
+  const filter = location
+    ? { location: { $regex: location, $options: "i" } }
+    : {};
+
+  const [properties, total] = await Promise.all([
+    Property.find(filter).skip(skip).limit(Number(limit)),
+    Property.countDocuments(filter),
+  ]);
+
+  res.json({ properties, total });
+});
+
+
 // GET /properties/:id
 router.get("/:id", async (req, res) => {
   const prop = await Property.findById(req.params.id);
   if (!prop) return res.status(404).json({ message: "Not found" });
   res.json({ property: prop });
 });
+
 
 export default router;
