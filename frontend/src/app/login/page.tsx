@@ -29,11 +29,18 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="max-w-sm mx-auto my-[30vh]">
-      <form onSubmit={submit} className="flex flex-col gap-2">
+    <div className="max-w-sm mx-auto mt-10 min-h-[100vh]">
+      <p className="text-sm mb-2">
+        You can login using your StayWise account to access our services.
+      </p>
+      <form
+        onSubmit={submit}
+        className="flex flex-col gap-2 border border-gray-50 rounded-lg shadow p-6"
+      >
         <label htmlFor="email">Email</label>
         <input
           name="email"
+          type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter email"
@@ -47,7 +54,7 @@ export default function LoginPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Enter password"
-          className="p-2 border rounded mb-2"
+          className="p-2 border rounded mb-3"
           required
         />
         <button
