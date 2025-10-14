@@ -47,9 +47,12 @@ function BookingsInner() {
             />
           </div>
           <div className="flex flex-col gap-4 overflow-y-auto max-h-[300px]">
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold flex flex-col gap-1">
               {booking?.property?.title}
-              <div className="text-xs font-normal">
+              <div className="text-sm font-normal">
+               ₹{booking?.property?.pricePerNight} /-
+              </div>
+              <div className="text-sm font-normal">
                 {booking?.property?.location}
               </div>
             </div>

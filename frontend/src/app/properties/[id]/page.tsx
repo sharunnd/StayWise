@@ -31,7 +31,7 @@ export default function PropertyPage({ params }: { params: { id: string } }) {
     );
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-4 p-6">
       <h1 className="text-3xl font-bold">{data.title}</h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         {data?.images &&
@@ -46,10 +46,11 @@ export default function PropertyPage({ params }: { params: { id: string } }) {
             </div>
           ))}
       </div>
-      <p className="text-lg text-muted">{data.location}</p>
+      <p className="text-lg">{data.location}</p>
+      <p className="text-lg">Price per Night: ₹{data.pricePerNight}/-</p>
       <p className="mt-3">{data.description}</p>
 
-      <div className="mt-6">
+      <div className="mt-4">
         <h2 className="text-lg font-semibold mb-2">Book this property</h2>
         <BookingForm propertyId={id} />
       </div>

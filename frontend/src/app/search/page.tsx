@@ -63,9 +63,12 @@ function SearchContent() {
                 className="object-cover object-center"
               />
             </div>
-            <div className="p-4">
-              <h2 className="font-semibold text-lg">{property.title}</h2>
-              <p className="text-sm text-gray-500">{property.location}</p>
+            <div className="p-4 flex justify-between items-center">
+              <div>
+                <h2 className="font-semibold text-lg">{property.title}</h2>
+                <p className="text-sm text-gray-500">{property.location}</p>
+              </div>
+              <p className="">₹{property.pricePerNight}/-</p>
             </div>
           </Link>
         ))}
@@ -97,7 +100,11 @@ function SearchContent() {
 
 export default function SearchPage() {
   return (
-    <Suspense fallback={<div className="p-8 text-center min-h-[100vh]">Loading search...</div>}>
+    <Suspense
+      fallback={
+        <div className="p-8 text-center min-h-[100vh]">Loading search...</div>
+      }
+    >
       <SearchContent />
     </Suspense>
   );

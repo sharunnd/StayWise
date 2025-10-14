@@ -3,10 +3,13 @@
 import { useState } from "react";
 import { useCreateBooking } from "../hooks/useCreateBooking";
 import { BookingPayload } from "../types";
+import { useUser } from "@/hooks/useUser";
+import { toast } from "react-toastify";
 
 type Props = { propertyId: string };
 
 export default function BookingForm({ propertyId }: Props) {
+  const { data: user } = useUser();
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [guests, setGuests] = useState(1);
@@ -19,6 +22,11 @@ export default function BookingForm({ propertyId }: Props) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!user) {
+      toast.error("Please login to book a property");
+      return;
+    }
 
     const payload: BookingPayload = { propertyId, startDate, endDate, guests };
 
@@ -53,6 +61,7 @@ export default function BookingForm({ propertyId }: Props) {
         onChange={(e) => setStartDate(e.target.value)}
         required
         className="border p-2 rounded w-full"
+        max={endDate}
       />
       <label htmlFor="end-date">End Date</label>
       <input
@@ -62,6 +71,7 @@ export default function BookingForm({ propertyId }: Props) {
         onChange={(e) => setEndDate(e.target.value)}
         required
         className="border p-2 rounded w-full"
+        min={startDate}
       />
       <label htmlFor="guests">Guests</label>
       <input
@@ -77,7 +87,7 @@ export default function BookingForm({ propertyId }: Props) {
       <button
         type="submit"
         disabled={loading}
-        style={{cursor: loading ? "not-allowed": "pointer"}}
+        style={{ cursor: loading ? "not-allowed" : "pointer" }}
         className="bg-blue-500 text-white p-2 rounded disabled:opacity-50"
       >
         {loading ? "Booking..." : "Book Now"}
