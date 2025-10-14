@@ -4,7 +4,7 @@ StayWise is a full-stack web application for listing properties and managing boo
 
 ## 🚀 Live Demo
 
-- **Frontend**: [https://stay-wise-p0v0acy0l-sharunnds-projects.vercel.app/]
+- **Frontend**: [https://stay-wise-umber.vercel.app/]
 
 ## 🛠️ Tech Stack
 
