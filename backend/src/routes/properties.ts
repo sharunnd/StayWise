@@ -47,14 +47,15 @@ router.get("/", async (req, res) => {
   res.json({ properties });
 });
 
-
+// GET /properties/search
 router.get("/search", async (req, res) => {
-  const { location = "", page = 1, limit = 6 } = req.query;
+  const { location = "", page = 1, limit = 6, minPrice, maxPrice } = req.query;
   const skip = (Number(page) - 1) * Number(limit);
 
-  const filter = location
-    ? { location: { $regex: location, $options: "i" } }
-    : {};
+  const filter: any = {};
+  if (location) filter.location = { $regex: location, $options: "i" };
+  if (minPrice && Number(minPrice) > 0) filter.pricePerNight = { ...filter.pricePerNight, $gte: Number(minPrice) };
+  if (maxPrice && Number(maxPrice) > 0) filter.pricePerNight = { ...filter.pricePerNight, $lte: Number(maxPrice) };
 
   const [properties, total] = await Promise.all([
     Property.find(filter).skip(skip).limit(Number(limit)),
@@ -71,6 +72,5 @@ router.get("/:id", async (req, res) => {
   if (!prop) return res.status(404).json({ message: "Not found" });
   res.json({ property: prop });
 });
-
 
 export default router;
