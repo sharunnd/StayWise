@@ -5,6 +5,27 @@ import api from "../../../lib/axiosInstance";
 import BookingForm from "../../../components/BookingForm";
 import { Property } from "../../../types";
 import Image from "next/image";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+
+const responsive = {
+  superLargeDesktop: {
+    breakpoint: { max: 4000, min: 3000 },
+    items: 5,
+  },
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 2,
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 2,
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1,
+  },
+};
 
 export default function PropertyPage({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -14,7 +35,7 @@ export default function PropertyPage({ params }: { params: { id: string } }) {
       const res = await api.get(`/properties/${id}`);
       return res.data.property as Property;
     },
-    retry: false, 
+    retry: false,
   });
 
   if (isLoading)
@@ -33,7 +54,7 @@ export default function PropertyPage({ params }: { params: { id: string } }) {
   return (
     <div className="space-y-4 p-6">
       <h1 className="text-3xl font-bold">{data.title}</h1>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <Carousel responsive={responsive} itemClass="px-3">
         {data?.images &&
           data.images.map((image, idx) => (
             <div key={idx} className="relative h-[300px] w-full">
@@ -45,7 +66,7 @@ export default function PropertyPage({ params }: { params: { id: string } }) {
               />
             </div>
           ))}
-      </div>
+      </Carousel>
       <p className="text-lg">{data.location}</p>
       <p className="text-lg">Price per Night: ₹{data.pricePerNight}/-</p>
       <p className="mt-3">{data.description}</p>
