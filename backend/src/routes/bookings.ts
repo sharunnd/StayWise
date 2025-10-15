@@ -9,7 +9,8 @@ const router = express.Router();
 // POST /bookings  (create a booking) - auth required
 router.post("/", requireAuth, async (req: AuthRequest, res) => {
   const { propertyId, startDate, endDate, guests, image } = req.body;
-  if (!propertyId || !startDate || !endDate) return res.status(400).json({ message: "Missing fields" });
+  if (!propertyId || !startDate || !endDate)
+    return res.status(400).json({ message: "Missing fields" });
 
   const booking = new Booking({
     user: req.user!.id,
@@ -17,7 +18,7 @@ router.post("/", requireAuth, async (req: AuthRequest, res) => {
     startDate: new Date(startDate),
     endDate: new Date(endDate),
     guests: guests || 1,
-    image
+    image,
   });
 
   await booking.save();
@@ -26,7 +27,9 @@ router.post("/", requireAuth, async (req: AuthRequest, res) => {
 
 // GET /bookings/my  - user can see their bookings
 router.get("/my", requireAuth, async (req: AuthRequest, res) => {
-  const bookings = await Booking.find({ user: req.user!.id }).populate("property");
+  const bookings = await Booking.find({ user: req.user!.id })
+    .sort({ createdAt: -1 })
+    .populate("property");
   res.json({ bookings });
 });
 

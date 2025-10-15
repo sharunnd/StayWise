@@ -5,6 +5,8 @@ import { useCreateBooking } from "../hooks/useCreateBooking";
 import { BookingPayload } from "../types";
 import { useUser } from "@/hooks/useUser";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
 
 type Props = { propertyId: string };
 
@@ -13,12 +15,10 @@ export default function BookingForm({ propertyId }: Props) {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [guests, setGuests] = useState(1);
-
+  const router = useRouter();
   const bookingMutation = useCreateBooking();
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,17 +31,19 @@ export default function BookingForm({ propertyId }: Props) {
     const payload: BookingPayload = { propertyId, startDate, endDate, guests };
 
     setLoading(true);
-    setError(null);
-    setSuccess(false);
+ 
 
     try {
-      await bookingMutation.mutateAsync(payload); // use mutateAsync
-      setSuccess(true);
+      await bookingMutation.mutateAsync(payload);
+      toast.success("Booking created successfully!");
+      router.push("/bookings");
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message); // Safe: Error has 'message'
+      if (err instanceof AxiosError) {
+        toast.error(
+          err?.response?.data?.message || "Failed to create booking."
+        );
       } else {
-        setError("Failed to create booking."); // fallback
+        toast.error("Failed to create booking.");
       }
     } finally {
       setLoading(false);
@@ -92,11 +94,6 @@ export default function BookingForm({ propertyId }: Props) {
       >
         {loading ? "Booking..." : "Book Now"}
       </button>
-
-      {error && <p className="text-red-500 mt-2">{error}</p>}
-      {success && (
-        <p className="text-green-500 mt-2">Booking created successfully!</p>
-      )}
     </form>
   );
 }
