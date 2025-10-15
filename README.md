@@ -48,3 +48,136 @@ StayWise is a full-stack web application for listing properties and managing boo
 - **Property List** - Browse all available properties
 - **Property Details** - Detailed property view with booking form
 - **My Bookings** - User's booking history
+
+## Folder Structure
+```
+staywise/
+├─ backend/
+│ ├─ src/
+│ │ ├─ models/ # Mongoose models
+│ │ ├─ routes/ # Express routes
+│ │ ├─ middleware/ # Auth and other middlewares
+│ │ ├─ utils/ # Utility functions
+│ │ └─ app.ts # Entry point of backend
+| | |_ index.ts
+│ ├─ package.json
+│ └─ tsconfig.json
+├─ frontend/
+│ ├─ app/ # Next.js pages and layouts
+│ ├─ components/ # React components
+│ ├─ hooks/ # Custom React hooks
+│ ├─ lib/ # Axios instances, API helpers
+│ ├─ types/ # TypeScript types
+│ ├─ public/ # Static files like images
+│ ├─ styles/ # Global CSS or Tailwind config
+│ ├─ package.json
+│ └─ tsconfig.json
+├─ .env # Environment variables
+├─ README.md
+└─ package.json
+```
+## Running Locally
+
+### 1. Clone the repository
+```bash
+git clone <repo-url>
+cd staywise
+```
+Backend
+
+Folder: /backend
+
+Runs on port 4000 (as per your axios base URL)
+
+Responsible for:
+
+MongoDB connection
+
+Property & Booking APIs
+
+File uploads via Cloudinary
+
+Authentication (JWT)
+
+Run with:
+```
+cd backend
+npm install
+npm run dev
+```
+
+Base URL: http://localhost:4000
+
+Frontend
+
+Folder: /frontend
+
+Built with Next.js (App Router / Client Components)
+
+Responsible for:
+
+UI pages: Home, Property List, Add Property, Bookings, Login, Signup
+
+React Query for data fetching
+
+Axios instance to call backend
+
+Image previews using next/image
+
+Run with:
+```
+cd frontend
+npm install
+```
+
+Add environment variables
+
+Create a .env file in the root folder with the following content:
+```
+MONGO_URI=<your_mongo_url>
+JWT_SECRET=<secret>
+CLIENT_URL=http://localhost:3000
+NODE_ENV=development
+CLOUD_NAME=<your_cloudinary_name>
+CLOUD_KEY=<your_cloudinary_key>
+CLOUD_SECRET=<your_cloudinary_secret>
+```
+Run the backend
+```
+npm run dev
+
+```
+Open in browser: http://localhost:4000
+
+
+Frontend
+
+Folder: frontend/ (or the root if combined)
+
+Built with Next.js (App Router / Client Components)
+
+Responsible for:
+
+UI pages: Home, Property List, Add Property, Bookings, Login, Signup
+
+React Query for data fetching
+
+Axios instance to call backend
+
+Image previews using next/image
+
+```
+cd frontend
+npm install
+```
+Add .env file in the root folder with the following content:
+
+```
+NEXT_PUBLIC_API_URL=<http://localhost:4000>
+```
+Run the frontend
+```
+npm run dev
+```
+
+Open in browser: http://localhost:3000
